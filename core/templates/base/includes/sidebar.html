@@ -9,20 +9,8 @@
     <div class="offcanvas-body p-0">
         <nav class="nav flex-column p-3 gap-1">
             <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
-               href="{% url 'dashboard' %}">
+               href="#">
                 <i class="bi bi-speedometer2 me-2"></i> Dashboard
-            </a>
-            <a class="nav-link {% if request.resolver_match.url_name == 'ponds' %}active{% endif %}"
-               href="{% url 'ponds' %}">
-                <i class="bi bi-water me-2"></i> Ponds
-            </a>
-            <a class="nav-link {% if request.resolver_match.url_name == 'feed' %}active{% endif %}"
-               href="{% url 'feed' %}">
-                <i class="bi bi-bag me-2"></i> Feed
-            </a>
-            <a class="nav-link {% if request.resolver_match.url_name == 'tasks' %}active{% endif %}"
-               href="{% url 'tasks' %}">
-                <i class="bi bi-list-check me-2"></i> Tasks
             </a>
             <hr class="my-2">
             <a class="nav-link" href="#">
@@ -36,24 +24,13 @@
 <!-- Static sidebar for ≥ lg -->
 <aside class="d-none d-lg-flex flex-column sidebar bg-body border-end p-3">
     <a class="navbar-brand d-flex align-items-center mb-3" href="/">
-        <img src="{% static 'img/logo.svg' %}" alt="Logo" width="28" height="28" class="me-2">
+{#        <img src="{% static 'img/logo.svg' %}" alt="Logo" width="28" height="28" class="me-2">#}
         <strong>{{ site_name|default:'MyApp' }}</strong>
     </a>
     <nav class="nav flex-column gap-1">
         <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
-           href="{% url 'dashboard' %}">
+           href="#">
             <i class="bi bi-speedometer2 me-2"></i> Dashboard
-        </a>
-        <a class="nav-link {% if request.resolver_match.url_name == 'ponds' %}active{% endif %}"
-           href="{% url 'ponds' %}">
-            <i class="bi bi-water me-2"></i> Ponds
-        </a>
-        <a class="nav-link {% if request.resolver_match.url_name == 'feed' %}active{% endif %}" href="{% url 'feed' %}">
-            <i class="bi bi-bag me-2"></i> Feed
-        </a>
-        <a class="nav-link {% if request.resolver_match.url_name == 'tasks' %}active{% endif %}"
-           href="{% url 'tasks' %}">
-            <i class="bi bi-list-check me-2"></i> Tasks
         </a>
     </nav>
     <div class="mt-auto small text-body-secondary">© {{ year|default:2025 }} {{ site_name|default:'MyApp' }}</div>

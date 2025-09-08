@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ page_title|default:'Dashboard' }} · {{ site_name|default:'MyApp' }}{% endblock %}</title>
+    {% include 'base/includes/styles.html' %}
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-body-tertiary">
+<div class="layout d-flex">
+    {% include 'base/includes/sidebar.html' %}
+
+
+    <div class="content d-flex flex-column w-100">
+        {% include 'base/includes/header.html' %}
+
+
+        <main class="container-fluid py-4">
+            {% block breadcrumbs %}{% endblock %}
+            {% block content %}
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="h4 mb-3">Welcome</h1>
+                        <p class="mb-0">Replace this with your page content.</p>
+                    </div>
+                </div>
+            {% endblock %}
+        </main>
+    </div>
+</div>
+
+
+<!-- Mobile backdrop to close sidebar -->
+<div class="backdrop" data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas"></div>
+
+
+{% include 'base/includes/scripts.html' %}
+{% block body_end %}{% endblock %}
+</body>
+</html>

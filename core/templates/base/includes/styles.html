@@ -1,0 +1,29 @@
+{% load static %}
+
+<!-- Bootstrap 5.3.8 -->
+<link href="{% static 'libs/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
+<style>
+    :root {
+    --sidebar-width: 260px;
+    }
+    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji'; }
+    .layout { min-height: 100vh; }
+    .sidebar {
+    width: var(--sidebar-width);
+    transition: transform .2s ease-in-out;
+    }
+    .sidebar .nav-link.active { font-weight: 600; }
+    .content { flex: 1 1 auto; }
+    @media (max-width: 991.98px) { /* < lg */
+    .sidebar { position: fixed; top: 0; bottom: 0; left: 0; z-index: 1040; transform: translateX(-100%); }
+    .sidebar.show { transform: translateX(0); }
+    .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.25); z-index: 1030; display: none; }
+    .backdrop.show { display: block; }
+    }
+</style>

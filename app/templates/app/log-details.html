@@ -49,6 +49,38 @@
             }
         }
 
+        function connectLogSocket(logId) {
+            const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+            const url = `${protocol}://${window.location.host}/ws/logs/${logId}`;
+
+            let ws;
+
+            function connect() {
+                ws = new WebSocket(url);
+
+                ws.onopen = () => {
+                    console.log(`✅ Connected to log stream ${logId}`);
+                };
+
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    appendLog(data.line);
+                };
+
+                ws.onclose = (event) => {
+                    console.warn(`⚠️ Disconnected from log stream ${logId}, retrying in 2s...`);
+                    setTimeout(connect, 2000); // retry after 2 seconds
+                };
+
+                ws.onerror = (err) => {
+                    console.error("WebSocket error:", err);
+                    ws.close(); // trigger onclose for reconnect
+                };
+            }
+
+            connect();
+        }
+
         // Show/hide Jump button based on scroll
         logBox.addEventListener("scroll", () => {
             if (isNearBottom(logBox)) {
@@ -63,11 +95,6 @@
             logBox.scrollTo({top: logBox.scrollHeight, behavior: "smooth"});
         });
 
-        {#// Example WebSocket hook#}
-        {#const ws = new WebSocket(`ws://${window.location.host}/ws/logs/{{ log_id }}/`);#}
-        {#ws.onmessage = (event) => {#}
-        {#    const data = JSON.parse(event.data);#}
-        {#    appendLog(data.line);#}
-        {#};#}
+        connectLogSocket({{ object.id }});
     </script>
 {% endblock %}

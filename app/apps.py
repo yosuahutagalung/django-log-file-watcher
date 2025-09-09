@@ -6,6 +6,7 @@ class AppConfig(DjangoAppConfig):
     name = 'app'
 
     def ready(self):
+        import app.signals
         from .logwatcher import log_manager
         log_manager.start_all()
 

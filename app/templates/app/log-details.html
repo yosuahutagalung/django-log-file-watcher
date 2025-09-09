@@ -9,6 +9,65 @@
         </div>
         <div class="card-body">
             <p>Path: {{ object.path }}</p>
+            <div id="log-box"
+                 class="bg-black text-white py-2 px-3 font-monospace overflow-y-auto overflow-x-auto"
+                 style="height: 600px;">
+                {% for line in lines %}
+                    <div>{{ line }}</div>
+                {% endfor %}
+            </div>
+            <button id="jump-btn"
+                    class="btn btn-primary position-absolute"
+                    style="bottom: 10px; right: 10px; display: none;">
+                Jump to bottom
+            </button>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const logBox = document.getElementById("log-box");
+        const jumpBtn = document.getElementById("jump-btn");
+
+        // Auto-scroll to bottom on page load
+        logBox.scrollTop = logBox.scrollHeight;
+
+        function isNearBottom(el, threshold = 50) {
+            return el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
+        }
+
+        function appendLog(line) {
+            // Create a new div for the log line
+            const lineEl = document.createElement("div");
+            lineEl.textContent = line; // safe from HTML injection
+            logBox.appendChild(lineEl);
+
+            // Auto-scroll if user is near bottom
+            if (isNearBottom(logBox)) {
+                logBox.scrollTop = logBox.scrollHeight;
+            }
+        }
+
+        // Show/hide Jump button based on scroll
+        logBox.addEventListener("scroll", () => {
+            if (isNearBottom(logBox)) {
+                jumpBtn.style.display = "none";
+            } else {
+                jumpBtn.style.display = "block";
+            }
+        });
+
+        // Button action (with smooth scrolling)
+        jumpBtn.addEventListener("click", () => {
+            logBox.scrollTo({top: logBox.scrollHeight, behavior: "smooth"});
+        });
+
+        {#// Example WebSocket hook#}
+        {#const ws = new WebSocket(`ws://${window.location.host}/ws/logs/{{ log_id }}/`);#}
+        {#ws.onmessage = (event) => {#}
+        {#    const data = JSON.parse(event.data);#}
+        {#    appendLog(data.line);#}
+        {#};#}
+    </script>
 {% endblock %}

@@ -59,7 +59,7 @@
                 ws = new WebSocket(url);
 
                 ws.onopen = () => {
-                    console.log(`✅ Connected to log stream ${logId}`);
+                    console.log(`Connected to log stream ${logId}`);
                 };
 
                 ws.onmessage = (event) => {
@@ -68,7 +68,7 @@
                 };
 
                 ws.onclose = (event) => {
-                    console.warn(`⚠️ Disconnected from log stream ${logId}, retrying in 2s...`);
+                    console.warn(`Disconnected from log stream ${logId}, retrying in 2s...`);
                     setTimeout(connect, 2000); // retry after 2 seconds
                 };
 

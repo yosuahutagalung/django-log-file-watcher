@@ -13,6 +13,16 @@
         {% include 'base/includes/header.html' %}
 
         <main class="container-fluid py-4">
+            <!-- Alert -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             <h1 class="page-title fw-semibold fs-3 mb-3">{% block page_header %}{% endblock %}</h1>
             {% block breadcrumbs %}{% endblock %}
             {% block content %}

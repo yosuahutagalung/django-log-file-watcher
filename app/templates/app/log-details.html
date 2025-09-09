@@ -4,8 +4,11 @@
 
 {% block content %}
     <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="card-title mb-0">{{ object.name }}</h5>
+        </div>
         <div class="card-body">
-            Hello
+            <p>Path: {{ object.path }}</p>
         </div>
     </div>
 {% endblock %}

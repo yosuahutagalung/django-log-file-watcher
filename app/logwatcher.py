@@ -42,24 +42,19 @@ class LogHandler(FileSystemEventHandler):
 class LogManager:
     def __init__(self):
         self.observer = Observer()
-        self.handlers = {}        # log_file_id -> handler
+        self.handlers = {}  # log_file_id -> (handler, watch)
         self.lock = threading.Lock()
         self._started = False
 
-    # Public: safe to call from sync or async contexts
     def start_all(self):
         try:
-            # If there's a running loop in this thread, schedule an async startup
             asyncio.get_running_loop()
         except RuntimeError:
-            # No running loop -> safe to call ORM directly (sync context)
             self._start_all_sync()
         else:
-            # Running loop -> schedule async version (non-blocking)
             asyncio.create_task(self._start_all_async())
 
     def _start_all_sync(self):
-        """Synchronous startup (safe when called from sync code)."""
         log_files = list(LogFile.objects.all())
         for lf in log_files:
             self.start_watcher(lf)
@@ -69,88 +64,83 @@ class LogManager:
                 self._started = True
 
     async def _start_all_async(self):
-        """Async startup (safe when called from an async context)."""
         log_files = await sync_to_async(list)(LogFile.objects.all())
         for lf in log_files:
-            # start_watcher is sync and thread-safe (uses lock)
             self.start_watcher(lf)
-        # observer.start() is sync, but it's fine to call from async task
         with self.lock:
             if not self._started:
                 self.observer.start()
                 self._started = True
 
     def start_watcher(self, log_file):
-        """Start watcher for a LogFile instance (safe from any context)."""
         with self.lock:
             if log_file.id in self.handlers:
                 return
 
             if not os.path.exists(log_file.path):
-                # path doesn't exist yet — skip for now
                 print(f"⚠️ Skipping {log_file.path}, file does not exist yet.")
                 return
 
             handler = LogHandler(log_file.path, log_file.id, getattr(log_file, "encoding", "utf-8"))
-            # schedule on the directory
-            self.observer.schedule(handler, os.path.dirname(log_file.path), recursive=False)
-            self.handlers[log_file.id] = handler
+            watch = self.observer.schedule(handler, os.path.dirname(log_file.path), recursive=False)
+            self.handlers[log_file.id] = (handler, watch)
 
     def stop_watcher(self, log_file):
-        """Stop watcher given a LogFile instance (safe from any context)."""
         self.stop_watcher_by_id(log_file.id)
 
     def stop_watcher_by_id(self, log_file_id):
         with self.lock:
-            handler = self.handlers.pop(log_file_id, None)
-        if handler:
+            entry = self.handlers.pop(log_file_id, None)
+        if entry:
+            handler, watch = entry
             try:
-                self.observer.unschedule(handler)
-            except Exception:
-                # observer.unschedule may behave differently across watchdog versions;
-                # if it errors, ignore to avoid crashing the manager.
-                pass
+                self.observer.unschedule(watch)
+            except Exception as e:
+                print(f"⚠️ Failed to unschedule watcher {log_file_id}: {e}")
 
-    # Public refresh that is safe in both contexts
     def refresh(self):
         try:
             asyncio.get_running_loop()
         except RuntimeError:
-            # sync
             self._refresh_sync()
         else:
-            # async context -> schedule async refresh (non-blocking)
             asyncio.create_task(self._refresh_async())
 
     def _refresh_sync(self):
-        """Synchronous refresh (safe in sync contexts)."""
         existing_ids = set(LogFile.objects.values_list("id", flat=True))
 
-        # Stop watchers for removed logfiles
         for logfile_id in list(self.handlers.keys()):
             if logfile_id not in existing_ids:
                 self.stop_watcher_by_id(logfile_id)
 
-        # Start watchers for new logfiles
         for lf in LogFile.objects.all():
             if lf.id not in self.handlers:
                 self.start_watcher(lf)
 
     async def _refresh_async(self):
-        """Async refresh (safe in async contexts)."""
         existing_ids = set(await sync_to_async(list)(LogFile.objects.values_list("id", flat=True)))
-
-        # Stop watchers for removed ones
         for logfile_id in list(self.handlers.keys()):
             if logfile_id not in existing_ids:
                 self.stop_watcher_by_id(logfile_id)
 
-        # Add new ones
         log_files = await sync_to_async(list)(LogFile.objects.all())
         for lf in log_files:
             if lf.id not in self.handlers:
                 self.start_watcher(lf)
 
+    def stop_all(self):
+        """Stop all watchers and shutdown observer cleanly."""
+        with self.lock:
+            for logfile_id in list(self.handlers.keys()):
+                self.stop_watcher_by_id(logfile_id)
+
+        if self._started:
+            self.observer.stop()
+            self.observer.join()
+            self._started = False
+
+
+log_manager = LogManager()
 
 # single shared manager instance
 log_manager = LogManager()

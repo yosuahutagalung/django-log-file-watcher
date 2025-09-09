@@ -46,10 +46,11 @@
 
             // Remove old logs past 500
             logBoxLines++;
-            if (logBoxLines === 500) {
+            if (logBoxLines >= 500) {
                 if (logBox.firstChild) {
                     logBox.removeChild(logBox.firstChild);
                 }
+                logBoxLines = 500;
             }
 
             // Auto-scroll if user is near bottom

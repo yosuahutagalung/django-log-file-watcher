@@ -7,7 +7,8 @@ if __name__ == "__main__":
         host=config('SERVER_HOST', default='127.0.0.1'),
         port=config('SERVER_PORT', default='8000'),
         workers=1,
-        log_level='info'
+        log_level='info',
+        reload=False
     )
     server = uvicorn.Server(config)
     server.run()

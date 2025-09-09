@@ -5,7 +5,7 @@ from django.core.asgi import get_asgi_application
 from channels.auth import AuthMiddlewareStack
 import app.routing
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "yourproject.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "core.settings")
 django.setup()
 
 application = ProtocolTypeRouter({

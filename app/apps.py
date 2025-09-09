@@ -1,6 +1,12 @@
-from django.apps import AppConfig
+from django.apps import AppConfig as DjangoAppConfig
 
 
-class AppConfig(AppConfig):
+class AppConfig(DjangoAppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'app'
+
+    def ready(self):
+        from .logwatcher import log_manager
+        log_manager.start_all()
+
+

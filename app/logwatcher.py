@@ -4,11 +4,6 @@ from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 from .models import LogFile
 
-
-from watchdog.events import FileSystemEventHandler
-from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
-
 class LogHandler(FileSystemEventHandler):
     def __init__(self, filepath, log_id):
         self.filepath = filepath

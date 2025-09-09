@@ -95,7 +95,7 @@ class LogManager:
                 return
 
             if not os.path.exists(log_file.path):
-                print(f"⚠️ Skipping {log_file.path}, file does not exist yet.")
+                print(f"Skipping {log_file.path}, file does not exist yet.")
                 return
 
             handler = LogHandler(log_file.path, log_file.id, getattr(log_file, "encoding", "utf-8"))

@@ -22,7 +22,7 @@
                                 <td>{{ log_file.name }}</td>
                                 <td>{{ log_file.path }}</td>
                                 <td>{{ log_file.encoding }}</td>
-                                <td><button class="btn btn-sm btn-outline-primary">See Logs</button></td>
+                                <td><a class="btn btn-sm btn-outline-primary" href="{% url 'log_detail' log_file.id %}">See Logs</a></td>
                             </tr>
                         {% endfor %}
                     </tbody>

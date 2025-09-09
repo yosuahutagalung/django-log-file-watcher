@@ -1,0 +1,34 @@
+{% extends 'base/layouts/base.html' %}
+
+{% block content %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Log Files</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Path</th>
+                            <th>Encoding</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log_file in object_list %}
+                            <tr>
+                                <td>{{ log_file.name }}</td>
+                                <td>{{ log_file.path }}</td>
+                                <td>{{ log_file.encoding }}</td>
+                                <td><button class="btn btn-sm btn-outline-primary">See Logs</button></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

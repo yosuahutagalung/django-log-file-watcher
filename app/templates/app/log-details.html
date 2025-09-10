@@ -2,6 +2,11 @@
 
 {% block page_header %}Log Detail{% endblock %}
 
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+    <li class="breadcrumb-item active">Log Details</li>
+{% endblock %}
+
 {% block content %}
     <div class="card shadow-sm">
         <div class="card-header">

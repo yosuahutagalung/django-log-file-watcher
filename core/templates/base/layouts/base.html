@@ -23,8 +23,17 @@
                 {% endfor %}
             {% endif %}
 
-            <h1 class="page-title fw-semibold fs-3 mb-3">{% block page_header %}{% endblock %}</h1>
-            {% block breadcrumbs %}{% endblock %}
+            <!-- Page Header Title -->
+            <h1 class="page-title fw-semibold fs-3 mb-1">{% block page_header %}{% endblock %}</h1>
+
+            <!-- Breadcrumbs -->
+            <nav>
+                <ol class="breadcrumb mb-3">
+                    {% block breadcrumbs %}{% endblock %}
+                </ol>
+            </nav>
+
+            <!-- Content -->
             {% block content %}
                 <div class="card shadow-sm">
                     <div class="card-body">

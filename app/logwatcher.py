@@ -6,6 +6,8 @@ from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync, sync_to_async
+from watchdog.observers.polling import PollingObserver
+
 from .models import LogFile
 
 
@@ -55,7 +57,7 @@ class LogManager:
     """Manages all directory/file watchers with safe async/sync usage."""
 
     def __init__(self):
-        self.observer = Observer()
+        self.observer = PollingObserver()
         self.dir_handlers = {}   # {directory: (DirectoryHandler, watch)}
         self.file_handlers = {}  # {log_file_id: LogHandler}
         self.lock = threading.Lock()

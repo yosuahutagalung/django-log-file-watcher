@@ -9,6 +9,7 @@ from app.models import LogFile
 class IndexView(LoginRequiredMixin, ListView):
     template_name = 'app/home.html'
     model = LogFile
+    ordering = 'name'
 
 
 class LogDetailView(LoginRequiredMixin, DetailView):

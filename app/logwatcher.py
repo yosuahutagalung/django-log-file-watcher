@@ -57,7 +57,7 @@ class LogManager:
     """Manages all directory/file watchers with safe async/sync usage."""
 
     def __init__(self):
-        self.observer = PollingObserver()
+        self.observer = PollingObserver(timeout=0.5)
         self.dir_handlers = {}   # {directory: (DirectoryHandler, watch)}
         self.file_handlers = {}  # {log_file_id: LogHandler}
         self.lock = threading.Lock()

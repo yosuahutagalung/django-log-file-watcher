@@ -1,0 +1,37 @@
+{% load static %}
+<!-- Offcanvas for mobile -->
+<div class="offcanvas offcanvas-start sidebar bg-body" tabindex="-1" id="sidebarOffcanvas"
+     aria-labelledby="sidebarLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="sidebarLabel">Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+        <nav class="nav flex-column p-3 gap-1">
+            <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+               href="#">
+                <i class="bi bi-speedometer2 me-2"></i> Dashboard
+            </a>
+            <hr class="my-2">
+            <a class="nav-link" href="#">
+                <i class="bi bi-gear me-2"></i> Settings
+            </a>
+        </nav>
+    </div>
+</div>
+
+
+<!-- Static sidebar for ≥ lg -->
+<aside class="d-none d-lg-flex flex-column sidebar bg-body border-end p-3">
+    <a class="navbar-brand d-flex align-items-center mb-3" href="/">
+{#        <img src="{% static 'img/logo.svg' %}" alt="Logo" width="28" height="28" class="me-2">#}
+        <strong>{{ site_name|default:'MyApp' }}</strong>
+    </a>
+    <nav class="nav flex-column gap-1">
+        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+           href="#">
+            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+        </a>
+    </nav>
+    <div class="mt-auto small text-body-secondary">© {{ year|default:2025 }} {{ site_name|default:'MyApp' }}</div>
+</aside>

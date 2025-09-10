@@ -1,0 +1,56 @@
+{% extends 'base/layouts/base.html' %}
+
+{% block page_header %}Home{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item active">Home</li>
+{% endblock %}
+
+{% block content %}
+    <div class="card shadow-sm">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Log Files</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="log-files-table" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Path</th>
+                            <th>Encoding</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log_file in object_list %}
+                            <tr>
+                                <td>{{ log_file.name }}</td>
+                                <td>{{ log_file.path }}</td>
+                                <td>{{ log_file.encoding }}</td>
+                                <td><a class="btn btn-sm btn-outline-primary" href="{% url 'log_detail' log_file.id %}">See Logs</a></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(document).ready(function () {
+            $('#log-files-table').DataTable({
+                "ordering": true,
+                "search": true,
+                "pageLength": 25,
+                "columnDefs": [
+                    { "orderable": true, "targets": [0, 1] },
+                    { "orderable": false, "targets": "_all" }
+                ]
+            })
+        });
+    </script>
+{% endblock %}

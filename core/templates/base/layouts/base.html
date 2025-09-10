@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log File Watcher{% block title %}{% endblock %}</title>
+    {% include 'base/includes/styles.html' %}
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-body-tertiary">
+<div class="layout d-flex">
+    <div class="content d-flex flex-column w-100">
+        {% include 'base/includes/header.html' %}
+
+        <main class="container-fluid py-4">
+            <!-- Alert -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Page Header Title -->
+            <h1 class="page-title fw-semibold fs-3 mb-1">{% block page_header %}{% endblock %}</h1>
+
+            <!-- Breadcrumbs -->
+            <nav>
+                <ol class="breadcrumb mb-3">
+                    {% block breadcrumbs %}{% endblock %}
+                </ol>
+            </nav>
+
+            <!-- Content -->
+            {% block content %}
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h1 class="h4 mb-3">Welcome</h1>
+                        <p class="mb-0">Replace this with your page content.</p>
+                    </div>
+                </div>
+            {% endblock %}
+        </main>
+    </div>
+</div>
+
+<div class="backdrop" data-bs-dismiss="offcanvas" data-bs-target="#sidebarOffcanvas"></div>
+
+{% include 'base/includes/scripts.html' %}
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -14,9 +14,6 @@ class LogFile(TimestampBaseModel):
     path = models.CharField(max_length=255)
     encoding = models.CharField(max_length=20, default='utf-8')
 
-    def __str__(self):
-        return f'({self.id}) {self.name}'
-
     class Meta:
         db_table = 'log_files'
 

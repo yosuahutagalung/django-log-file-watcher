@@ -1,0 +1,20 @@
+<service>
+  <id>LogFilesWatcherSvc</id>
+  <name>Log Files Watcher Service</name>
+  <description>WinSW service for Log Files Watcher Service</description>
+
+  <!-- Working directory -->
+  <workingdirectory></workingdirectory>
+
+  <!-- Command to launch Django -->
+  <executable></executable>
+  <arguments>run_server.py</arguments>
+
+  <!-- Logging -->
+  <logpath></logpath>
+  <log mode="append">
+  </log>
+
+  <!-- Restart if crash -->
+  <onfailure action="restart" delay="5 sec"/>
+</service>

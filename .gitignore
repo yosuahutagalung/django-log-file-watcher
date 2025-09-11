@@ -22,6 +22,8 @@ venv
 # other
 .DS_Store
 logs
+deploy.ps1
+LogFileWatcherSvc.xml
 
 # javascript
 package-lock.json

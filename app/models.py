@@ -16,7 +16,7 @@ class LogFile(TimestampBaseModel):
 
     def __str__(self):
         return f'({self.id}) {self.name}'
-
+    
     class Meta:
         db_table = 'log_files'
 

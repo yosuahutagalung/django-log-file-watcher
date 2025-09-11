@@ -3,8 +3,8 @@ from django.contrib import admin
 from app.models import LogFile
 
 
-# Register your models here.
+@admin.register(LogFile)
 class LogFileAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['name', 'path', 'encoding', 'updated_at', 'created_at']
+    search_fields = ['name', 'path', 'encoding']
 
-admin.site.register(LogFile, LogFileAdmin)

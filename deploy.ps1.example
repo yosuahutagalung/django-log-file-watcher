@@ -1,0 +1,26 @@
+Write-Host "Starting deployment..."
+
+# Go to project folder
+cd # Add project folder here
+
+# Ensure we're on main
+git fetch origin main
+git reset --hard origin/main
+
+# Use Python from venv
+$python = "" # Add virtual environment python.exe path here
+
+# Update dependencies
+& $python -m pip install --upgrade pip
+& $python -m pip install -r requirements.txt
+
+# Apply database migrations
+& $python manage.py migrate --noinput
+
+# Collect static files
+& $python manage.py collectstatic --noinput
+
+# Restart WinSW services
+.\LogFileWatcherSvc.exe restart
+
+Write-Host "Deployment complete."
